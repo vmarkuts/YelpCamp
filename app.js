@@ -7,9 +7,12 @@ app.use(bodyParser.urlencoded({extended: true}));
 app.set('view engine', 'ejs');
 
 var campgrounds = [
+		{name: faker.address.city()+', '+faker.address.county(), image: faker.image.nature()},
+		{name: faker.address.city()+', '+faker.address.county(), image: faker.image.city()},
+		{name: faker.address.city()+', '+faker.address.county(), image: faker.image.business()},
 		{name: faker.address.city()+', '+faker.address.county(), image: faker.image.avatar()},
-		{name: faker.address.city()+', '+faker.address.county(), image: faker.image.avatar()},
-		{name: faker.address.city()+', '+faker.address.county(), image: faker.image.avatar()}
+		{name: faker.address.city()+', '+faker.address.county(), image: faker.image.city()},
+		{name: faker.address.city()+', '+faker.address.county(), image: faker.image.nature()}
 	];
 
 app.get('/', function(req, res) {
