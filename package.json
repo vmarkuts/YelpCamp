@@ -1,0 +1,22 @@
+{
+  "name": "yelpcamp",
+  "version": "1.0.0",
+  "description": "course project",
+  "main": "app.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/vmarkuts/YelpCamp.git"
+  },
+  "author": "vmarkuts",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/vmarkuts/YelpCamp/issues"
+  },
+  "homepage": "https://github.com/vmarkuts/YelpCamp#readme",
+  "dependencies": {
+    "express": "^4.17.1"
+  }
+}
