@@ -1,26 +1,34 @@
-var express = require('express');
-var app = express();
-var faker = require('faker');
-var bodyParser = require('body-parser');
+var express = require('express'),
+		app = express(),
+		faker = require('faker'),
+		bodyParser = require('body-parser');
+		mongoose = require('mongoose');
 
+mongoose.connect('mongodb://localhost/yelp_camp');
 app.use(bodyParser.urlencoded({extended: true}));
 app.set('view engine', 'ejs');
 
-var campgrounds = [
-		{name: faker.address.city()+', '+faker.address.county(), image: faker.image.nature()},
-		{name: faker.address.city()+', '+faker.address.county(), image: faker.image.city()},
-		{name: faker.address.city()+', '+faker.address.county(), image: faker.image.business()},
-		{name: faker.address.city()+', '+faker.address.county(), image: faker.image.avatar()},
-		{name: faker.address.city()+', '+faker.address.county(), image: faker.image.city()},
-		{name: faker.address.city()+', '+faker.address.county(), image: faker.image.nature()}
-	];
+//shema setup
+var campgroundSchema = new mongoose.Schema({
+		name: String,
+		image: String
+});
+
+var Campground = mongoose.model('Campground', campgroundSchema);
 
 app.get('/', function(req, res) {
 	res.render('landing');
 });
 
 app.get('/campgrounds', function(req, res) {
-	res.render('campgrounds', {campgrounds: campgrounds});
+	//get all campgrounds from db:
+	Campground.find({}, function (err, allCampground) {
+		if (err) {
+			console.log(err);
+		} else {
+			res.render('campgrounds',{campgrounds:allCampground})
+		}
+	})
 });
 
 app.post('/campgrounds', function(req, res) {
@@ -28,15 +36,20 @@ app.post('/campgrounds', function(req, res) {
 	var name = req.body.name;
 	var image = req.body.image;
 	var newCampground = {name: name, image: image};
-	campgrounds.push(newCampground);
-	//redirect back to home page
-	res.redirect('/campgrounds');
+	//create new campground and save to db
+	Campground.create(newCampground, function(err,newlyCreated){
+		if (err) {
+			console.log(err);
+		} else {
+			res.redirect('/campgrounds');
+		}
+	});
 });
 
 app.get('/campgrounds/new', function(req, res){
 	res.render('new')
 });
 
-app.listen(4000, function(){
+app.listen(4001, function(){
 	console.log('The YelpCamp Server Has Started');
 })
